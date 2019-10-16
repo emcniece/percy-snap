@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  percysnap:
+    build: .
+    image: percysnap:latest
+    command: tail -f /dev/null
+    environment:
+      PERCY_TOKEN: xxx
+      PERCY_TARGET_URL: https://google.com
+      PERCY_WAITFOR: body
+      CRON_TIME: 0 0 * * *
