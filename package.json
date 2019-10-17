@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "docker build --tag percysnap:latest .",
+    "tag": "docker tag percysnap:latest percysnap:`node -p \"require('./package.json').version\"`",
+    "push": "docker push percysnap:latest"
   },
   "author": "",
   "license": "ISC",
