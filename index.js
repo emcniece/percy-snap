@@ -19,6 +19,18 @@ function randomDailyCrontime() {
     return `${minute} ${hour} * * *`
 }
 
+function runCapture() {
+    getIp().then(ip => {
+        spawn(cwd+'/node_modules/.bin/percy', ['exec', '--', 'node', cwd+'/capture.js'], {
+            env: {
+                ...process.env,
+                PERCY_BRANCH: ip
+            },
+            stdio: 'inherit'
+        });
+    });
+}
+
 console.log('PercySnap version', pkg.version)
 console.log('CRON_TIME:', process.env.CRON_TIME)
 
@@ -28,14 +40,6 @@ if(cronTime == 'daily') {
     console.log('Rendered Cron schedule:', cronTime)
 }
 
-cron.schedule(cronTime, () => {
-    getIp().then(ip => {
-        spawn(cwd+'/node_modules/.bin/percy', ['exec', '--', 'node', cwd+'/capture.js'], {
-            env: {
-                ...process.env,
-                PERCY_BRANCH: ip
-            },
-            stdio: 'inherit'
-        });
-    })
-});
+// Trigger on boot, then schedule future runs
+runCapture();
+cron.schedule(cronTime, runCapture);

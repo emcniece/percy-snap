@@ -2,8 +2,8 @@ version: "2"
 
 services:
   percysnap:
-    build: .
-    image: percysnap:latest
+    #build: .
+    image: emcniece/percysnap:latest
     environment:
       PERCY_TOKEN: "${PERCY_TOKEN}"
       PERCY_TARGET_URL: "${PERCY_TARGET_URL}"
