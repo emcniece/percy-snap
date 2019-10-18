@@ -2,11 +2,10 @@ version: "2"
 
 services:
   percysnap:
-    build: .
-    image: percysnap:latest
-    command: tail -f /dev/null
+    #build: .
+    image: emcniece/percysnap:latest
     environment:
-      PERCY_TOKEN: xxx
-      PERCY_TARGET_URL: https://google.com
+      PERCY_TOKEN: "${PERCY_TOKEN}"
+      PERCY_TARGET_URL: "${PERCY_TARGET_URL}"
       PERCY_WAITFOR: body
-      CRON_TIME: 0 0 * * *
+      CRON_TIME: "${CRON_TIME}"
