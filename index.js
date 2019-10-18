@@ -1,17 +1,41 @@
 require('dotenv').config()
-const PercyScript = require('@percy/script');
+const pkg = require('./package.json')
+const cron = require('node-cron')
+const { spawn } = require('child_process')
+const fetch = require('node-fetch')
+const path = require('path')
 
-PercyScript.run(async (page, percySnapshot) => {
-  await page.goto(process.env.PERCY_TARGET_URL);
-  
-  // ensure the page has loaded before capturing a snapshot
-  if(process.env.PERCY_WAITFOR){
-    wait = isNaN(parseInt(process.env.PERCY_WAITFOR)) ? process.env.PERCY_WAITFOR : parseInt(process.env.PERCY_WAITFOR);
-    await page.waitFor(wait);
-  }
-  
-  await percySnapshot('homepage');
-},{
-  executablePath: '/usr/bin/google-chrome-unstable',
-  args: ['--disable-dev-shm-usage', '--no-sandbox']
+const cwd = path.dirname(require.main.filename)
+
+async function getIp() {
+    let res = await fetch('https://ifconfig.co/ip')
+    let data = await res.text()
+    return data.trim()
+}
+
+function randomDailyCrontime() {
+    let hour = Math.floor(Math.random() * Math.floor(23));
+    let minute = Math.floor(Math.random() * Math.floor(59));
+    return `${minute} ${hour} * * *`
+}
+
+console.log('PercySnap version', pkg.version)
+console.log('CRON_TIME:', process.env.CRON_TIME)
+
+let cronTime = process.env.CRON_TIME
+if(cronTime == 'daily') {
+    cronTime = randomDailyCrontime()
+    console.log('Rendered Cron schedule:', cronTime)
+}
+
+cron.schedule(cronTime, () => {
+    getIp().then(ip => {
+        spawn(cwd+'/node_modules/.bin/percy', ['exec', '--', 'node', cwd+'/capture.js'], {
+            env: {
+                ...process.env,
+                PERCY_BRANCH: ip
+            },
+            stdio: 'inherit'
+        });
+    })
 });

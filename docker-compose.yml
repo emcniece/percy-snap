@@ -4,9 +4,8 @@ services:
   percysnap:
     build: .
     image: percysnap:latest
-    command: tail -f /dev/null
     environment:
       PERCY_TOKEN: "${PERCY_TOKEN}"
       PERCY_TARGET_URL: "${PERCY_TARGET_URL}"
       PERCY_WAITFOR: body
-      CRON_TIME: "* * * * *"
+      CRON_TIME: "${CRON_TIME}"

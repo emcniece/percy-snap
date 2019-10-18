@@ -1,20 +1,20 @@
 {
-  "name": "percyscript-test",
+  "name": "percysnap",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "docker build --tag percysnap:latest .",
-    "tag": "docker tag percysnap:latest percysnap:`node -p \"require('./package.json').version\"`",
-    "push": "docker push percysnap:latest"
+    "build": "docker build --tag emcniece/percysnap:latest .",
+    "tag": "docker tag emcniece/percysnap:latest emcniece/percysnap:`node -p \"require('./package.json').version\"`",
+    "push": "docker push emcniece/percysnap:latest"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@percy/script": "^1.0.2"
-  },
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "@percy/script": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "node-cron": "^2.0.3",
+    "node-fetch": "^2.6.0"
   }
 }
