@@ -61,3 +61,13 @@ node new-project.js project1 project2 ...
 ## Todo
 
 - [ ] Optimize image, reduce size
+- [ ] Split `PERCY_WAIT` on comma to allow multiple ready conditions
+- [ ] Log waits for visibility
+- [ ] Epic: Handle multiple projects
+  - [ ] Parse optional JSON config file
+    - `projects: [{"percy_token": "xxx", "percy_target_url": "xxx", "percy_wait": "1000"}]`
+  - [ ] Parse optional ENV vars
+    - `PERCY_TOKEN1`... `PERCY_TOKEN(N)`
+    - `PERCY_TARGET_URL1`... `PERCY_TARGET_URL(N)`
+    - `PERCY_WAIT1`... `PERCY_WAIT(N)`
+  - [ ] Deep-merge ENV with JSON config
